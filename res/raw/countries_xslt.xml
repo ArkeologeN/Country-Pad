@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+    <xsl:output method="xml" indent="yes"/>
+
+      <xsl:template match="node()">
+        <countries>
+         <xsl:for-each select="/root/countryCode">
+           <country>
+            <xsl:variable name="i" select="position()" />
+            <xsl:attribute name="code">
+              <xsl:value-of select="current()" />
+            </xsl:attribute> 
+            <xsl:attribute name="name">
+              <xsl:value-of select="(//countryName)[$i]" />
+            </xsl:attribute>
+          </country>
+         </xsl:for-each> 
+        </countries>
+      </xsl:template>
+</xsl:stylesheet>
