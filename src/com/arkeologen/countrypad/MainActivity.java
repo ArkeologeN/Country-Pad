@@ -76,23 +76,21 @@ public class MainActivity extends ListActivity {
     	if (this._txtSearchCountry != null && this._txtSearchCountry instanceof EditText) {
     		this._txtSearchCountry.addTextChangedListener(new TextWatcher() {
 				
-				@Override
 				public void onTextChanged(CharSequence s, int start, int before, int count) {
 					_adapter.getFilter().filter(s.toString());
 				}
 				
-				@Override
 				public void beforeTextChanged(CharSequence s, int start, int count,
 						int after) {
 					// TODO Auto-generated method stub
 					
 				}
 				
-				@Override
 				public void afterTextChanged(Editable s) {
 					// TODO Auto-generated method stub
 					
 				}
+				
 			});
     	}
     }
