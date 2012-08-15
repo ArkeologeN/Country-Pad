@@ -3,6 +3,7 @@ package com.arkeologen.countrypad;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -20,11 +21,11 @@ import android.util.Log;
 public class MainActivity extends ListActivity {
     /** Called when the activity is first created. */
 	
-	private String[] _countries;
+	private ArrayList<Country> _countries;
 	
 	public MainActivity() {
 		Log.v("INFO","Constructor Called");
-		this._countries = new String[] {};
+		this._countries = new ArrayList<Country>();
 	}
 	
     @Override
@@ -32,17 +33,23 @@ public class MainActivity extends ListActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         InputStream is = this.getResources().openRawResource(R.raw.countries);
-		try {
+        this.xmlCountryParsing(is);
+        setListAdapter(new CountryArrayAdapter(this, R.layout.countrieslist, this._countries));
+    }
+    
+    private void xmlCountryParsing(InputStream is) {
+    	try {
 			DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
 			Document doc = builder.parse(is,null);
-			NodeList country = doc.getElementsByTagName("country");
-			Log.i("Country Count:",country.getLength()+"");
-			for (int k = 0; k < country.getLength(); k++) {
-				Element elm = (Element)country.item(k);
-				Log.v("Counter:",k+"");
-				//Log.v("Attribs Name:",elm.getAttribute("name").toString());
-				//this._countries[k] = elm.getAttribute("name").toString();
+			NodeList countries = doc.getElementsByTagName("country");
+			for (int k = 0; k < countries.getLength(); k++) {
+				Element elm = (Element)countries.item(k);
+				Country country = new Country();
+				country.setCountryCode(elm.getAttribute("code").toString());
+				country.setCountryName(elm.getAttribute("name").toString());
+				this._countries.add(country);
 			}
+			
 		} catch (ParserConfigurationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -55,7 +62,5 @@ public class MainActivity extends ListActivity {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		Log.v("Adapter Countries:",this._countries.length+"");
-        setListAdapter(new CountryArrayAdapter(this, R.layout.countrieslist, this._countries));
     }
 }
