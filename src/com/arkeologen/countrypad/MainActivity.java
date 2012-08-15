@@ -16,12 +16,17 @@ import org.xml.sax.SAXException;
 
 import android.app.ListActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.widget.EditText;
 
 public class MainActivity extends ListActivity {
     /** Called when the activity is first created. */
 	
 	private ArrayList<Country> _countries;
+	private EditText _txtSearchCountry = null;
+	private static CountryArrayAdapter _adapter = null;
 	
 	public MainActivity() {
 		Log.v("INFO","Constructor Called");
@@ -34,7 +39,10 @@ public class MainActivity extends ListActivity {
         setContentView(R.layout.main);
         InputStream is = this.getResources().openRawResource(R.raw.countries);
         this.xmlCountryParsing(is);
-        setListAdapter(new CountryArrayAdapter(this, R.layout.countrieslist, this._countries));
+        _adapter = new CountryArrayAdapter(this, R.layout.countrieslist, this._countries);
+        setListAdapter(_adapter);
+        _txtSearchCountry = (EditText)findViewById(R.id.txtCountrySearch);
+        this.setTextFilter();
     }
     
     private void xmlCountryParsing(InputStream is) {
@@ -62,5 +70,30 @@ public class MainActivity extends ListActivity {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+    }
+    
+    private void setTextFilter() {
+    	if (this._txtSearchCountry != null && this._txtSearchCountry instanceof EditText) {
+    		this._txtSearchCountry.addTextChangedListener(new TextWatcher() {
+				
+				@Override
+				public void onTextChanged(CharSequence s, int start, int before, int count) {
+					_adapter.getFilter().filter(s.toString());
+				}
+				
+				@Override
+				public void beforeTextChanged(CharSequence s, int start, int count,
+						int after) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+				@Override
+				public void afterTextChanged(Editable s) {
+					// TODO Auto-generated method stub
+					
+				}
+			});
+    	}
     }
 }

@@ -15,6 +15,7 @@ public final class R {
     }
     public static final class id {
         public static final int ctryName=0x7f060000;
+        public static final int txtCountrySearch=0x7f060001;
     }
     public static final class layout {
         public static final int countrieslist=0x7f030000;
