@@ -17,6 +17,7 @@ import org.xml.sax.SAXException;
 import com.arkeologen.countrypad.CountryArrayAdapter.CountryViewHolder;
 
 import android.app.ListActivity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -104,5 +105,7 @@ public class MainActivity extends ListActivity {
     protected void onListItemClick(ListView l, View v, int position, long id) {
     	CountryViewHolder cViewHolder = (CountryViewHolder)v.getTag();
     	Log.v("cViewHolder - ",cViewHolder.countryName.getTag().toString());
+    	Intent iDetails = new Intent(MainActivity.this, DetailsActivity.class);
+    	startActivity(iDetails);
     }
 }
