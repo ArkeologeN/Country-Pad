@@ -14,12 +14,16 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import com.arkeologen.countrypad.CountryArrayAdapter.CountryViewHolder;
+
 import android.app.ListActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.View;
 import android.widget.EditText;
+import android.widget.ListView;
 
 public class MainActivity extends ListActivity {
     /** Called when the activity is first created. */
@@ -53,6 +57,7 @@ public class MainActivity extends ListActivity {
 			for (int k = 0; k < countries.getLength(); k++) {
 				Element elm = (Element)countries.item(k);
 				Country country = new Country();
+				country.setIsBasic(true);
 				country.setCountryCode(elm.getAttribute("code").toString());
 				country.setCountryName(elm.getAttribute("name").toString());
 				this._countries.add(country);
@@ -93,5 +98,11 @@ public class MainActivity extends ListActivity {
 				
 			});
     	}
+    }
+    
+    @Override
+    protected void onListItemClick(ListView l, View v, int position, long id) {
+    	CountryViewHolder cViewHolder = (CountryViewHolder)v.getTag();
+    	Log.v("cViewHolder - ",cViewHolder.countryName.getTag().toString());
     }
 }

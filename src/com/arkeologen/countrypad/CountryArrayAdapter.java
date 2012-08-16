@@ -39,17 +39,26 @@ public class CountryArrayAdapter extends ArrayAdapter<ArrayList<Country>> implem
 		return this._mFCountries.size();
 	}
 	
+	public static class CountryViewHolder {
+		public TextView countryName;
+	}
+	
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		View rowView = null;
+		View rowView = convertView;
 		try {
-			LayoutInflater inflator = (LayoutInflater) this._context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			rowView = inflator.inflate(this._layoutID, parent,false);
-			TextView countryName = (TextView) rowView.findViewById(R.id.ctryName);
-			if (this._mFCountries.size() > 0) {
-				Country country = this._mFCountries.get(position);
-				countryName.setText(country.getCountryName().toString());
+			if (rowView == null) {
+				LayoutInflater inflator = (LayoutInflater) this._context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+				rowView = inflator.inflate(this._layoutID, parent,false);
+				CountryViewHolder cViewHolder = new CountryViewHolder();
+				cViewHolder.countryName = (TextView) rowView.findViewById(R.id.ctryName);
+				rowView.setTag(cViewHolder);
 			}
+			
+			CountryViewHolder cViewHolder = (CountryViewHolder) rowView.getTag();
+			Country country = this._mFCountries.get(position);
+			cViewHolder.countryName.setText(country.getCountryName().toString());
+			cViewHolder.countryName.setTag(country.getCountryCode().toString());
 			
 		} catch( Exception e) {
 			e.printStackTrace();
